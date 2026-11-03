@@ -1,0 +1,14 @@
+# Tema visual "Brasa", el mismo del banner y de los diagramas del repositorio.
+[theme]
+base               = "dark"
+primaryColor       = "#F77636"
+backgroundColor    = "#100C0A"
+secondaryBackgroundColor = "#1C1512"
+textColor          = "#FAF0EA"
+font               = "sans serif"
+
+[server]
+# En macOS el vigilante de archivos agota los descriptores con un Data Lake
+# de este tamano. Se desactiva.
+fileWatcherType = "none"
+headless        = true

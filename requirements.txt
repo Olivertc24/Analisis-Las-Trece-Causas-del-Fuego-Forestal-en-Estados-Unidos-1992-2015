@@ -1,0 +1,8 @@
+# Dependencias del aplicativo de analisis de las trece causas del fuego.
+# Se declaran sin fijar version exacta salvo donde el proyecto depende de una
+# funcionalidad concreta.
+
+streamlit>=1.49      # Marco del aplicativo web
+duckdb>=1.1          # Cliente de MotherDuck y motor OLAP
+pandas>=2.0          # Manipulacion de los resultados
+plotly>=5.18         # Graficos interactivos
