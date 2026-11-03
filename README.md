@@ -145,16 +145,21 @@ de años, midiendo el tamaño tras cada lote**, para no agotar la cuota a ciegas
 
 ```
 assets/
-  banner_causas.png        Cabecera, con su script generador
+  banner_causas.png        Cabecera
+  esquema_estrella.png     Diagrama del modelo dimensional
+  generar_*.py             Los generadores, y el motor de dibujo compartido
 Base de datos/
   normalizacion_3fn.sql    Fuente -> 1 entidad + 9 catálogos en 3FN   (9,4 s)
   NORMALIZACION.md         Documentación, parte por parte
+  modelo_dimensional.sql   3FN -> 9 dimensiones + 1 hecho              (5,0 s)
+  MODELO_DIMENSIONAL.md    Documentación del esquema en estrella
 ```
 
-La base construida no se versiona: se reconstruye ejecutando el script sobre la
-fuente original. Ocupa 340,6 MB frente a los 759 MB del archivo de partida.
+Las bases construidas no se versionan: se reconstruyen ejecutando los dos
+scripts en ese orden. La normalizada ocupa 340,6 MB y la analítica 295,4 MB,
+frente a los 759 MB del archivo de partida.
 
-Las etapas siguientes —carga en Supabase, modelo dimensional, aplicativo y
+Las etapas siguientes —carga en Supabase, carga en MotherDuck, aplicativo y
 tablero— irán añadiendo sus propias carpetas a medida que se completen.
 
 ---
