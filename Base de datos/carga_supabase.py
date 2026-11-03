@@ -157,8 +157,16 @@ def cadena_de_conexion():
 
 
 def tamano_mb(con):
+    """
+    Tamano de la base EN POSTGRESQL.
+
+    Tiene que ir por `postgres_query`: pg_database_size es una funcion del
+    servidor, no de DuckDB. Ejecutada directamente, DuckDB la busca en su
+    propio catalogo y falla -que es justo lo que paso la primera vez-.
+    """
     return con.execute(
-        "SELECT pg_database_size(current_database()) / 1048576.0"
+        "SELECT * FROM postgres_query('pg', "
+        "'SELECT pg_database_size(current_database()) / 1048576.0')"
     ).fetchone()[0]
 
 
@@ -221,8 +229,10 @@ def main():
     destino = con.execute(f"SELECT COUNT(*) FROM pg.{TABLA}").fetchone()[0]
     print(f"    filas en la fuente : {origen:,}")
     print(f"    filas en PostgreSQL: {destino:,}")
-    acres_o = con.execute("SELECT ROUND(SUM(FIRE_SIZE)) FROM src.Fires "
-                          "WHERE FIRE_YEAR <= ?", [anio]).fetchone()[0]
+    # FIRE_YEAR llega como VARCHAR por sqlite_all_varchar: hay que castear
+    # antes de compararlo con un entero, o DuckDB se niega.
+    acres_o = con.execute("SELECT ROUND(SUM(CAST(FIRE_SIZE AS DOUBLE))) FROM src.Fires "
+                          "WHERE CAST(FIRE_YEAR AS INTEGER) <= ?", [anio]).fetchone()[0]
     acres_d = con.execute(f"SELECT ROUND(SUM(fire_size)) FROM pg.{TABLA}").fetchone()[0]
     print(f"    acres en la fuente (hasta {anio}): {acres_o:,.0f}")
     print(f"    acres en PostgreSQL              : {acres_d:,.0f}")
