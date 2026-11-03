@@ -123,8 +123,8 @@ lugar de alojar una sola copia que sirva mal a los tres:
 | Servicio | Qué aloja | Por qué ahí |
 |---|---|---|
 | **Supabase** | La tabla original íntegra, 1.880.465 filas | El cuestionario SQL se responde contra la fuente cruda, con sus 37 columnas y sus inconsistencias a la vista, en un motor relacional cliente-servidor. |
-| **MotherDuck** | El modelo en 3FN | Lo consume el aplicativo de Streamlit. DuckDB es OLAP y vectorizado: las agregaciones del aplicativo se resuelven sin traer los datos al cliente. |
-| **MotherDuck** | El modelo dimensional | Lo consume Tableau. Un esquema en estrella es lo que una herramienta de tablero espera encontrar. |
+| **MotherDuck** · `fpa_normalizada` | El modelo en 3FN | Lo consume el aplicativo de Streamlit. DuckDB es OLAP y vectorizado: las agregaciones del aplicativo se resuelven sin traer los datos al cliente. |
+| **MotherDuck** · `fpa_analitica` | El modelo dimensional | Lo consume Tableau. Un esquema en estrella es lo que una herramienta de tablero espera encontrar. |
 
 ### Nota sobre el dimensionamiento en Supabase
 
@@ -153,6 +153,8 @@ Base de datos/
   NORMALIZACION.md         Documentación, parte por parte
   modelo_dimensional.sql   3FN -> 9 dimensiones + 1 hecho              (5,0 s)
   MODELO_DIMENSIONAL.md    Documentación del esquema en estrella
+  carga_motherduck.sql     Sube las dos bases a MotherDuck             (57 s)
+  CARGA_MOTHERDUCK.md      Documentación de la carga en la nube
 ```
 
 Las bases construidas no se versionan: se reconstruyen ejecutando los dos
