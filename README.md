@@ -122,7 +122,7 @@ lugar de alojar una sola copia que sirva mal a los tres:
 
 | Servicio | Qué aloja | Por qué ahí |
 |---|---|---|
-| **Supabase** | La tabla original íntegra, 1.880.465 filas | El cuestionario SQL se responde contra la fuente cruda, con sus 37 columnas y sus inconsistencias a la vista, en un motor relacional cliente-servidor. |
+| **Supabase** | La tabla original, 1.805.974 filas (1992–2014) | El cuestionario SQL se responde contra la fuente cruda, con sus 37 columnas y sus inconsistencias a la vista, en un motor relacional cliente-servidor. |
 | **MotherDuck** · `fpa_normalizada` | El modelo en 3FN | Lo consume el aplicativo de Streamlit. DuckDB es OLAP y vectorizado: las agregaciones del aplicativo se resuelven sin traer los datos al cliente. |
 | **MotherDuck** · `fpa_analitica` | El modelo dimensional | Lo consume Tableau. Un esquema en estrella es lo que una herramienta de tablero espera encontrar. |
 
@@ -138,6 +138,16 @@ Por eso **la tabla se carga sin clave primaria**. `FOD_ID` indexado costaría un
 son consultas analíticas que recorren la tabla completa, donde PostgreSQL prefiere
 el recorrido secuencial aunque exista el índice. La carga se ejecuta **por lotes
 de años, midiendo el tamaño tras cada lote**, para no agotar la cuota a ciegas.
+
+**El resultado medido: 1.805.974 filas, de 1992 a 2014** —el 96,04 % del
+registro— ocupando 475,7 MB de los 500. El año 2015 no entró: necesitaba 19,6 MB
+y quedaban 13,8. El corte no afecta al análisis, que consulta los 24 años
+completos en MotherDuck; solo al cuestionario SQL, y está declarado en la propia
+página y en [`CARGA_SUPABASE.md`](Base%20de%20datos/CARGA_SUPABASE.md).
+
+Una advertencia operativa: **los proyectos gratuitos de Supabase se pausan tras
+una semana sin actividad**. Si el cuestionario deja de responder, se reactiva con
+un clic desde el panel; el aplicativo distingue ese caso y lo explica.
 
 ---
 
@@ -155,6 +165,10 @@ Base de datos/
   MODELO_DIMENSIONAL.md    Documentación del esquema en estrella
   carga_motherduck.sql     Sube las dos bases a MotherDuck             (57 s)
   CARGA_MOTHERDUCK.md      Documentación de la carga en la nube
+  carga_supabase.py        Sube la tabla original a PostgreSQL        (4 min)
+  CARGA_SUPABASE.md        Documentación de la carga y de su corte
+app.py, pages/, src/       Aplicativo de Streamlit
+DESPLIEGUE.md              Guía de publicación
 ```
 
 Las bases construidas no se versionan: se reconstruyen ejecutando los dos
