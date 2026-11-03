@@ -146,12 +146,16 @@ de años, midiendo el tamaño tras cada lote**, para no agotar la cuota a ciegas
 ```
 assets/
   banner_causas.png        Cabecera, con su script generador
-Base de datos/             Scripts de construcción del modelo y su documentación
+Base de datos/
+  normalizacion_3fn.sql    Fuente -> 1 entidad + 9 catálogos en 3FN   (9,4 s)
+  NORMALIZACION.md         Documentación, parte por parte
 ```
 
-Las etapas siguientes —carga en Supabase, normalización, modelo dimensional,
-aplicativo y tablero— irán añadiendo sus propias carpetas a medida que se
-completen.
+La base construida no se versiona: se reconstruye ejecutando el script sobre la
+fuente original. Ocupa 340,6 MB frente a los 759 MB del archivo de partida.
+
+Las etapas siguientes —carga en Supabase, modelo dimensional, aplicativo y
+tablero— irán añadiendo sus propias carpetas a medida que se completen.
 
 ---
 
